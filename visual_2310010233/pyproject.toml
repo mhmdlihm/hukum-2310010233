@@ -1,0 +1,5 @@
+[project]
+name = "PySide Widgets Project"
+
+[tool.pyside6-project]
+files = ["databasequery.py", "main.py", "main.ui", "pengadilan.py", "pengadilan.ui", "tahapan.py", "tahapan.ui"]

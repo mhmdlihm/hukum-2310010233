@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>main</class>
+ <widget class="QMainWindow" name="main">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>main</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMenu_Halaman">
+    <property name="title">
+     <string>Menu Halaman</string>
+    </property>
+    <addaction name="actionTahapan"/>
+    <addaction name="actionPengadilan"/>
+   </widget>
+   <addaction name="menuMenu_Halaman"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionTahapan">
+   <property name="text">
+    <string>Tahapan Perkara</string>
+   </property>
+  </action>
+  <action name="actionPengadilan">
+   <property name="text">
+    <string>Pengadilan</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,75 @@
+# This Python file uses the following encoding: utf-8
+import sys
+
+from PySide6.QtWidgets import QApplication, QWidget, QMessageBox, QTableWidgetItem
+from PySide6.QtCore import QFile
+from PySide6.QtUiTools import QUiLoader
+from databasequery import crud
+
+class pengadilannegeri(QWidget):
+    def _init_(self, parent=None):
+        super()._init_(parent)
+        filenya=QFile("acara.ui")
+        filenya.open(QFile.ReadOnly)
+
+        unggahfile=QUiLoader()
+        self.halamanpengadilannegeri=unggahfile.load(filenya,self)
+        #self.resize(self.halamanAnggota.size())
+        self.aksi=crud()
+        self.tampilAcara()
+        self.halamanPengadilannegeri.btnHapus.clicked.connect(self.dohapusPengadilannegeri)
+        self.halamanPengadilannegeri.btnUbah.clicked.connect(self.doUbahPengadilannegeri)
+        self.halamanPengadilannegeri.btnSimpan.clicked.connect(self.doSimpanPengadilannegeri)
+
+    def doSimpanPengadilannegeri(self):
+        if not self.halamanPengadilannegeri.editID.text().strip():
+            QMessageBox.information(None,"Informasi","ID Acara Belum di isi")
+            self.halamanPengadilannegeri.editID.setFocus()
+        elif not self.halamanPengadilannegeri.editNama.text().strip():
+            QMessageBox.information(None,"Informasi","Nama Acara Belum di isi")
+            self.halamanPengadilannegeri.editNama.setFocus()
+        else:
+            validasi=QMessageBox.information(None,"Informasi","Apakah anda yakin menyimpan data ini?",
+            QMessageBox.Yes | QMessageBox.No)
+
+            if validasi==QMessageBox.Yes:
+
+                tempID=self.halaman.editID.text()
+                tempNama=self.halamanAcara.editNama.text()
+                tempDeskripsi=self.halamanAcara.editDeskripsi.text()
+                tempMulai=self.halamanAcara.editMulai.text()
+                tempBerakhir=self.halamanAcara.editBerakhir.text()
+                self.aksi.simpanAcara(tempID, tempNama, tempDeskripsi, tempMulai, tempBerakhir)
+                QMessageBox.information(None,"Informasi","Data Berhasil di simpan")
+                self.tampilAcara()
+
+            else:
+                pass
+
+    def doUbahAcara(self):
+        tempID=self.halamanAcara.editID.text()
+        tempNama=self.halamanAcara.editNama.text()
+        tempDeskripsi=self.halamanAcara.editDeskripsi.text()
+        tempMulai=self.halamanAcara.editMulai.text()
+        tempBerakhir=self.halamanAcara.editBerakhir.text()
+        self.aksi.ubahAcara(tempID, tempNama, tempDeskripsi, tempMulai, tempBerakhir)
+        QMessageBox.information(None,"Informasi","Data Berhasil di ubah")
+        self.tampilAcara()
+
+    def dohapusAcara(self):
+        tempID=self.halamanAcara.editID.text()
+        self.aksi.hapusAcara(tempID)
+        QMessageBox.information(None,"Informasi","Data Berhasil di Hapus")
+        self.tampilAcara()
+
+
+    def tampilAcara(self):
+        self.halamanAcara.tabelAcara.setRowCount(0)
+        data=self.aksi.dataAcara()
+        for i, r in enumerate(data):
+            self.halamanAcara.tabelAcara.insertRow(i)
+            self.halamanAcara.tabelAcara.setItem(i, 0, QTableWidgetItem(str(r["idacara"])))
+            self.halamanAcara.tabelAcara.setItem(i, 1, QTableWidgetItem(str(r["nama"])))
+            self.halamanAcara.tabelAcara.setItem(i, 2, QTableWidgetItem(str(r["deskripsi"])))
+            self.halamanAcara.tabelAcara.setItem(i, 3, QTableWidgetItem(str(r["mulai"])))
+            self.halamanAcara.tabelAcara.setItem(i, 4, QTableWidgetItem(str(r["berakhir"])))
